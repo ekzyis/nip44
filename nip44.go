@@ -38,8 +38,6 @@ func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, err
 	)
 	if options.Version != 0 {
 		version = options.Version
-	} else {
-		version = 1
 	}
 	if options.Salt != nil {
 		salt = options.Salt
