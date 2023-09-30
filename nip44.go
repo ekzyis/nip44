@@ -59,7 +59,7 @@ func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, err
 	if padded, err = pad(plaintext); err != nil {
 		return "", err
 	}
-	if ciphertext, err = chacha20Encrypt(enc, nonce, []byte(padded)); err != nil {
+	if ciphertext, err = chacha20_(enc, nonce, []byte(padded)); err != nil {
 		return "", err
 	}
 	hmac_ = sha256Hmac(auth, ciphertext)
@@ -103,7 +103,7 @@ func Decrypt(key []byte, ciphertext string) (string, error) {
 	if !bytes.Equal(hmac_, sha256Hmac(auth, ciphertext_)) {
 		return "", errors.New("invalid hmac")
 	}
-	if padded, err = chacha20Encrypt(enc, nonce, ciphertext_); err != nil {
+	if padded, err = chacha20_(enc, nonce, ciphertext_); err != nil {
 		return "", err
 	}
 	unpaddedLen = binary.BigEndian.Uint16(padded[0:2])
@@ -114,7 +114,7 @@ func Decrypt(key []byte, ciphertext string) (string, error) {
 	return string(unpadded), nil
 }
 
-func chacha20Encrypt(key []byte, nonce []byte, message []byte) ([]byte, error) {
+func chacha20_(key []byte, nonce []byte, message []byte) ([]byte, error) {
 	var (
 		cipher *chacha20.Cipher
 		dst    = make([]byte, len(message))
