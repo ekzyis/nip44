@@ -1,6 +1,7 @@
 package nip44
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/rand"
 	"crypto/sha256"
@@ -47,7 +48,7 @@ func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, err
 		}
 	}
 	if version != 2 {
-		return "", errors.New("unknown encryption version")
+		return "", errors.New("unknown version")
 	}
 	if len(salt) != 32 {
 		return "", errors.New("salt must be 32 bytes")
@@ -67,6 +68,50 @@ func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, err
 	concat = append(concat, ciphertext...)
 	concat = append(concat, hmac_...)
 	return base64.StdEncoding.EncodeToString(concat), nil
+}
+
+func Decrypt(key []byte, ciphertext string) (string, error) {
+	var (
+		version     int = 2
+		decoded     []byte
+		dLen        int
+		salt        []byte
+		ciphertext_ []byte
+		hmac_       []byte
+		enc         []byte
+		nonce       []byte
+		auth        []byte
+		padded      []byte
+		unpaddedLen uint16
+		unpadded    []byte
+		err         error
+	)
+	if ciphertext[0:1] == "#" {
+		return "", errors.New("unknown version")
+	}
+	if decoded, err = base64.StdEncoding.DecodeString(ciphertext); err != nil {
+		return "", err
+	}
+	if version = int(decoded[0]); version != 2 {
+		return "", errors.New("unknown version")
+	}
+	dLen = len(decoded)
+	salt, ciphertext_, hmac_ = decoded[1:33], decoded[33:dLen-32], decoded[dLen-32:]
+	if enc, nonce, auth, err = messageKeys(key, salt); err != nil {
+		return "", err
+	}
+	if !bytes.Equal(hmac_, sha256Hmac(auth, ciphertext_)) {
+		return "", errors.New("invalid hmac")
+	}
+	if padded, err = chacha20Encrypt(enc, nonce, ciphertext_); err != nil {
+		return "", err
+	}
+	unpaddedLen = binary.BigEndian.Uint16(padded[0:2])
+	unpadded = padded[2 : unpaddedLen+2]
+	if len(unpadded) == 0 || len(unpadded) != int(unpaddedLen) || len(padded) != 2+calcPadding(int(unpaddedLen)) {
+		return "", errors.New("invalid padding")
+	}
+	return string(unpadded), nil
 }
 
 func chacha20Encrypt(key []byte, nonce []byte, message []byte) ([]byte, error) {
