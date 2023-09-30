@@ -15,30 +15,39 @@ func assertCrypt(t *testing.T, key string, salt string, plaintext string, expect
 		actual    string
 		decrypted string
 		err       error
+		ok        bool
 	)
-	if k, err = hex.DecodeString(key); err != nil {
-		t.Errorf("hex decode failed for key")
+	k, err = hex.DecodeString(key)
+	if ok = assert.NoErrorf(t, err, "hex decode failed for key: %v", err); !ok {
+		return
 	}
-	if s, err = hex.DecodeString(salt); err != nil {
-		t.Errorf("hex decode failed for salt")
+	s, err = hex.DecodeString(salt)
+	if ok = assert.NoErrorf(t, err, "hex decode failed for salt: %v", err); !ok {
+		return
 	}
 	actual, err = nip44.Encrypt(k, plaintext, &nip44.EncryptOptions{Salt: s})
-	if assert.NoError(t, err) {
-		assert.Equal(t, expected, actual)
-		decrypted, err = nip44.Decrypt(k, expected)
-		if assert.NoError(t, err) {
-			assert.Equal(t, decrypted, plaintext)
-		}
+	if ok = assert.NoError(t, err, "encryption failed: %v", err); !ok {
+		return
 	}
+	if ok = assert.Equalf(t, expected, actual, "wrong encryption"); !ok {
+		return
+	}
+	decrypted, err = nip44.Decrypt(k, expected)
+	if ok = assert.NoErrorf(t, err, "decryption failed: %v", err); !ok {
+		return
+	}
+	assert.Equal(t, decrypted, plaintext, "wrong decryption")
 }
 
 func assertDecryptFail(t *testing.T, key string, ciphertext string, msg string) {
 	var (
 		k   []byte
 		err error
+		ok  bool
 	)
-	if k, err = hex.DecodeString(key); err != nil {
-		t.Errorf("hex decode failed for key")
+	k, err = hex.DecodeString(key)
+	if ok = assert.NoErrorf(t, err, "hex decode failed for key: %v", err); !ok {
+		return
 	}
 	_, err = nip44.Decrypt(k, ciphertext)
 	assert.ErrorContains(t, err, msg)
