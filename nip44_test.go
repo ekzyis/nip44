@@ -181,8 +181,8 @@ func TestCryptFail001(t *testing.T) {
 func TestCryptFail002(t *testing.T) {
 	assertDecryptFail(t,
 		"e2aad10de00913088e5cb0f73fa526a6a17e95763cc5b2a127022f5ea5a73445",
-		"ArIJia3D3cQc0sQ1lSwNWakTFdjFIY1QQFc/w3SVQ6yvPSc+7YCIFTmGk5OLuh1nhl6TvID7sGKLFUCWRW1eRfV/0a7sT46N3nTQzD7IE67zLWrYqGnE+0DDNz6sJ4hAaFrT",
-		"invalid hmac",
+		"AK1AjUvoYW3IS7C/BGRUoqEC7ayTfDUgnEPNeWTF/reBA4fZmoHrtrz5I5pCHuwWZ22qqL/Xt1VidEZGMLds0yaJ5VwUbeEifEJlPICOFt1ssZJxCUf43HvRwCVTFskbhSMh",
+		"unknown version",
 	)
 }
 
@@ -197,7 +197,7 @@ func TestCryptFail003(t *testing.T) {
 func TestCryptFail004(t *testing.T) {
 	assertDecryptFail(t,
 		"2e70c0a1cde884b88392458ca86148d859b273a5695ede5bbe41f731d7d88ffd",
-		"Agn/l3ULCEAS4V7LhGFM6IGA17jsDUaFCKhrbXDANholdUejFZPARM22IvOqp1U/UmFSkeSyTBYbbwy5ykmi+mKiER/Pr3IhMJbShCKkP4ytxzWxEndwVjRV+ZgzmeGNL7Dy",
+		"Agn/l3ULCEAS4V7LhGFM6IGA17jsDUaFCKhrbXDANholdUejFZPARM22IvOqp1U/UmFSkeSyTBYbbwy5ykmi+mKiEcWL+nVmTOf28MMiC+rTpZys/8p1hqQFpn+XWZRPrVay",
 		"invalid hmac",
 	)
 }
@@ -205,7 +205,7 @@ func TestCryptFail004(t *testing.T) {
 func TestCryptFail005(t *testing.T) {
 	assertDecryptFail(t,
 		"a808915e31afc5b853d654d2519632dac7298ee2ecddc11695b8eba925935c2a",
-		"AmWxSwuUmqp9UsQX63U7OQ6K1thLI69L7G2b+j4DoIr0U0P/M1/oKm95z8qz6Kg0zQawLzwk3DskvWA2drXP4zK+t0BULZ9vhTDlmL8rsvBozBsvQwFPqd63PRRS4zrFvgwh",
+		"AmWxSwuUmqp9UsQX63U7OQ6K1thLI69L7G2b+j4DoIr0U0P/M1/oKm95z8qz6Kg0zQawLzwk3DskvWA2drXP4zK+tzHpKvWq0KOdx5MdypboSQsP4NXfhh2KoUffjkyIOiMA",
 		"invalid hmac",
 	)
 }
