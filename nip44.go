@@ -25,7 +25,7 @@ type EncryptOptions struct {
 
 func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, error) {
 	var (
-		version    int = 1
+		version    int = 2
 		salt       []byte
 		enc        []byte
 		nonce      []byte
@@ -46,7 +46,7 @@ func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, err
 			return "", err
 		}
 	}
-	if version != 1 {
+	if version != 2 {
 		return "", errors.New("unknown encryption version")
 	}
 	if len(salt) != 32 {
@@ -62,10 +62,11 @@ func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, err
 		return "", err
 	}
 	hmac_ = sha256Hmac(auth, ciphertext)
+	concat = append(concat, []byte{byte(version)}...)
 	concat = append(concat, salt...)
 	concat = append(concat, ciphertext...)
 	concat = append(concat, hmac_...)
-	return "1" + base64.StdEncoding.EncodeToString(concat), nil
+	return base64.StdEncoding.EncodeToString(concat), nil
 }
 
 func chacha20Encrypt(key []byte, nonce []byte, message []byte) ([]byte, error) {
@@ -103,7 +104,7 @@ func messageKeys(conversationKey []byte, salt []byte) ([]byte, []byte, []byte, e
 		auth  []byte = make([]byte, 32)
 		err   error
 	)
-	r = hkdf.New(sha256.New, conversationKey, salt, []byte("nip44-v1"))
+	r = hkdf.New(sha256.New, conversationKey, salt, []byte("nip44-v2"))
 	if _, err = io.ReadFull(r, enc); err != nil {
 		return nil, nil, nil, err
 	}
