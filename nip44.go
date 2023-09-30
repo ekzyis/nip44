@@ -11,6 +11,7 @@ import (
 	"io"
 	"math"
 
+	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"golang.org/x/crypto/chacha20"
 	"golang.org/x/crypto/hkdf"
 )
@@ -24,7 +25,7 @@ type EncryptOptions struct {
 	Version int
 }
 
-func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, error) {
+func Encrypt(conversationKey []byte, plaintext string, options *EncryptOptions) (string, error) {
 	var (
 		version    int = 2
 		salt       []byte
@@ -53,7 +54,7 @@ func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, err
 	if len(salt) != 32 {
 		return "", errors.New("salt must be 32 bytes")
 	}
-	if enc, nonce, auth, err = messageKeys(key, salt); err != nil {
+	if enc, nonce, auth, err = messageKeys(conversationKey, salt); err != nil {
 		return "", err
 	}
 	if padded, err = pad(plaintext); err != nil {
@@ -70,7 +71,7 @@ func Encrypt(key []byte, plaintext string, options *EncryptOptions) (string, err
 	return base64.StdEncoding.EncodeToString(concat), nil
 }
 
-func Decrypt(key []byte, ciphertext string) (string, error) {
+func Decrypt(conversationKey []byte, ciphertext string) (string, error) {
 	var (
 		version     int = 2
 		decoded     []byte
@@ -97,7 +98,7 @@ func Decrypt(key []byte, ciphertext string) (string, error) {
 	}
 	dLen = len(decoded)
 	salt, ciphertext_, hmac_ = decoded[1:33], decoded[33:dLen-32], decoded[dLen-32:]
-	if enc, nonce, auth, err = messageKeys(key, salt); err != nil {
+	if enc, nonce, auth, err = messageKeys(conversationKey, salt); err != nil {
 		return "", err
 	}
 	if !bytes.Equal(hmac_, sha256Hmac(auth, ciphertext_)) {
@@ -112,6 +113,10 @@ func Decrypt(key []byte, ciphertext string) (string, error) {
 		return "", errors.New("invalid padding")
 	}
 	return string(unpadded), nil
+}
+
+func GenerateConversationKey(sendPrivkey *secp256k1.PrivateKey, recvPubkey *secp256k1.PublicKey) []byte {
+	return secp256k1.GenerateSharedSecret(sendPrivkey, recvPubkey)
 }
 
 func chacha20_(key []byte, nonce []byte, message []byte) ([]byte, error) {
