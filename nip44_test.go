@@ -32,6 +32,18 @@ func assertCrypt(t *testing.T, key string, salt string, plaintext string, expect
 	}
 }
 
+func assertDecryptFail(t *testing.T, key string, ciphertext string, msg string) {
+	var (
+		k   []byte
+		err error
+	)
+	if k, err = hex.DecodeString(key); err != nil {
+		t.Errorf("hex decode failed for key")
+	}
+	_, err = nip44.Decrypt(k, ciphertext)
+	assert.ErrorContains(t, err, msg)
+}
+
 func TestCrypt001(t *testing.T) {
 	assertCrypt(t,
 		"c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5",
@@ -146,5 +158,70 @@ func TestCrypt013(t *testing.T) {
 		"79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
 		"A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending.",
 		"Anm+Zn753LusVaBilc6HCwcCm/zbLc4o2VnygVsW+BeYb9wHyKevpe7ohJ6OkpceFcb0pySY8TLGwT7Q3zWNDKxc9blXanxKborEXkQH8xNaB2ViJfgxpkutbwbYd0Grix34xzaZBASufdsNm7R768t51tI6sdS0nms6kWLVJpEGu6Ke4Bldv4StJtWBLaTcgsgN+4WxDbBhC/nhwjEQiBBbbmUrPWjaVZXjl8dzzPrYtkSoeBNJs/UNvDwym4+qrmhv4ASTvVflpZgLlSe4seqeu6dWoRqn8uRHZQnPs+XhqwbdCHpeKGB3AfGBykZY0RIr0tjarWdXNasGbIhGM3GiLasioJeabAZw0plCevDkKpZYDaNfMJdzqFVJ8UXRIpvDpQad0SOm8lLum/aBzUpLqTjr3RvSlhYdbuODpd9pR5K60k4L2N8nrPtBv08wlilQg2ymwQgKVE6ipxIzzKMetn8+f0nQ9bHjWFJqxetSuMzzArTUQl9c4q/DwZmCBhI2",
+	)
+}
+
+func TestCryptFail001(t *testing.T) {
+	assertDecryptFail(t,
+		"8673ec68393a997bfad7eab8661461daf8b3931b7e885d78312a3fb7fe17f41a",
+		"##Atqupco0WyaOW2IGDKcshwxI9xO8HgD/P8Ddt46CbxDbOsrsqIEybscEwg5rnI/Cx03mDSmeweOLKD7dw5BDZQDxXSlCwX1LIcTJEZaJPTz98Ftu0zSE0d93ED7OtdlvNeZx",
+		"unknown version",
+	)
+}
+
+func TestCryptFail002(t *testing.T) {
+	assertDecryptFail(t,
+		"e2aad10de00913088e5cb0f73fa526a6a17e95763cc5b2a127022f5ea5a73445",
+		"ArIJia3D3cQc0sQ1lSwNWakTFdjFIY1QQFc/w3SVQ6yvPSc+7YCIFTmGk5OLuh1nhl6TvID7sGKLFUCWRW1eRfV/0a7sT46N3nTQzD7IE67zLWrYqGnE+0DDNz6sJ4hAaFrT",
+		"invalid hmac",
+	)
+}
+
+func TestCryptFail003(t *testing.T) {
+	assertDecryptFail(t,
+		"8673ec68393a997bfad7eab8661461daf8b3931b7e885d78312a3fb7fe17f41a",
+		"Atqupco0WyaOW2IGDKcshwxI9xO8HgD/P8Ddt46CbxDbOsrsqIEybscEwg5rnI/Cx03mDSmeweOLKD,7dw5BDZQDxXSlCwX1LIcTJEZaJPTz98Ftu0zSE0d93ED7OtdlvNeZx",
+		"invalid base64",
+	)
+}
+
+func TestCryptFail004(t *testing.T) {
+	assertDecryptFail(t,
+		"2e70c0a1cde884b88392458ca86148d859b273a5695ede5bbe41f731d7d88ffd",
+		"Agn/l3ULCEAS4V7LhGFM6IGA17jsDUaFCKhrbXDANholdUejFZPARM22IvOqp1U/UmFSkeSyTBYbbwy5ykmi+mKiER/Pr3IhMJbShCKkP4ytxzWxEndwVjRV+ZgzmeGNL7Dy",
+		"invalid hmac",
+	)
+}
+
+func TestCryptFail005(t *testing.T) {
+	assertDecryptFail(t,
+		"a808915e31afc5b853d654d2519632dac7298ee2ecddc11695b8eba925935c2a",
+		"AmWxSwuUmqp9UsQX63U7OQ6K1thLI69L7G2b+j4DoIr0U0P/M1/oKm95z8qz6Kg0zQawLzwk3DskvWA2drXP4zK+t0BULZ9vhTDlmL8rsvBozBsvQwFPqd63PRRS4zrFvgwh",
+		"invalid hmac",
+	)
+}
+
+func TestCryptFail006(t *testing.T) {
+	assertDecryptFail(t,
+		"6ee3efc4255e3b8270e5dd3f7dc7f6b60878cda6218c8df34a3261cd48744931",
+		"Anq2XbuLvCuONcr7V0UxTh8FAyWoZNEdBHXvdbNmDZHBu7F9m36yBd58mVUBB5ktBTOJREDaQT1KAyPmZidP+IRea1lNw5YAEK7+pbnpfCw8CD0i2n8Pf2IDWlKDhLiVvatw",
+		"invalid padding",
+	)
+}
+
+func TestCryptFail007(t *testing.T) {
+	assertDecryptFail(t,
+		"1675a773dbf6fbcbef6a293004a4504b6c856978be738b10584b0269d437c8d1",
+		"An1Cg+O1TIhdav7ogfSOYvCj9dep4ctxzKtZSniCw5MwhT0hvSnF9Xjp9Lml792qtNbmAVvR6laukTe9eYEjeWPpZFxtkVpYTbbL9wDKFeplDMKsUKVa+roSeSvv0ela9seDVl2Sfso=",
+		"invalid padding",
+	)
+
+}
+
+func TestCryptFail008(t *testing.T) {
+	assertDecryptFail(t,
+		"1741a44c052d5ae363c7845441f73d2b6c28d9bfb3006190012bba12eb4c774b",
+		"Am+f1yZnwnOs0jymZTcRpwhDRHTdnrFcPtsBzpqVdD6bL9HUMo3Mjkz4bjQo/FJF2LWHmaCr9Byc3hU9D7we+EkNBWenBHasT1G52fZk9r3NKeOC1hLezNwBLr7XXiULh+NbMBDtJh9/aQh1uZ9EpAfeISOzbZXwYwf0P5M85g9XER8hZ2fgJDLb4qMOuQRG6CrPezhr357nS3UHwPC2qHo3uKACxhE+2td+965yDcvMTx4KYTQg1zNhd7PA5v/WPnWeq2B623yLxlevUuo/OvXplFho3QVy7s5QZVop6qV2g2/l/SIsvD0HIcv3V35sywOCBR0K4VHgduFqkx/LEF3NGgAbjONXQHX8ZKushsEeR4TxlFoRSovAyYjhWolz+Ok3KJL2Ertds3H+M/Bdl2WnZGT0IbjZjn3DS+b1Ke0R0X4Onww2ZG3+7o6ncIwTc+lh1O7YQn00V0HJ+EIp03heKV2zWdVSC615By/+Yt9KAiV56n5+02GAuNqA",
+		"invalid padding",
 	)
 }

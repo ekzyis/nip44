@@ -90,7 +90,7 @@ func Decrypt(key []byte, ciphertext string) (string, error) {
 		return "", errors.New("unknown version")
 	}
 	if decoded, err = base64.StdEncoding.DecodeString(ciphertext); err != nil {
-		return "", err
+		return "", errors.New("invalid base64")
 	}
 	if version = int(decoded[0]); version != 2 {
 		return "", errors.New("unknown version")
