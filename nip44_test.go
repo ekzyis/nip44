@@ -130,6 +130,7 @@ func TestCrypt011(t *testing.T) {
 		"AqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2+xmGnjIMPMqqJGmjdYAYZUDUyEEUO3/evHUaO40LePeR91VlMVZ7I+nKJPkaUiKZ3cQiQnA86Uwti2IxepmzOFN",
 	)
 }
+
 func TestCrypt012(t *testing.T) {
 	assertCrypt(t,
 		"aa971537d741089885a0b48f2730a125e15b36033d089d4537a4e1204e76b39e",
@@ -138,6 +139,7 @@ func TestCrypt012(t *testing.T) {
 		"ArAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACyuqG6RycuPyDPtwxzTcuMQu+is3N5XuWTlvCjligVaVBRydexaylXbsX592MEd3/Jt13BNL/GlpYpGDvLS4Tt/+2s9FX/16e/RDc+czdwXglc4DdSHiq+O06BvvXYfEQOPw=",
 	)
 }
+
 func TestCrypt013(t *testing.T) {
 	assertCrypt(t,
 		"79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
