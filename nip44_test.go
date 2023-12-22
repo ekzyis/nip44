@@ -94,6 +94,8 @@ func assertDecryptFail(t *testing.T, conversationKey string, plaintext string, c
 }
 
 func assertConversationKeyFail(t *testing.T, sk1 string, pub2 string, msg string) {
+	// TODO: Update GenerateConversationKey since secp256k1 does accept invalid or weak keys
+	t.Skip("secp256k1 keys are not validated yet during conversation key generation.")
 	var (
 		// sendPrivkey *secp256k1.PrivateKey
 		// recvPubkey  *secp256k1.PublicKey
@@ -426,7 +428,6 @@ func TestCryptLong003(t *testing.T) {
 
 func TestConversationKeyFail001(t *testing.T) {
 	// sec1 higher than curve.n
-	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
 	assertConversationKeyFail(t,
 		"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
 		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
@@ -436,7 +437,6 @@ func TestConversationKeyFail001(t *testing.T) {
 
 func TestConversationKeyFail002(t *testing.T) {
 	// sec1 is 0
-	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
 	assertConversationKeyFail(t,
 		"0000000000000000000000000000000000000000000000000000000000000000",
 		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
@@ -446,7 +446,6 @@ func TestConversationKeyFail002(t *testing.T) {
 
 func TestConversationKeyFail003(t *testing.T) {
 	// pub2 is invalid, no sqrt, all-ff
-	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
 	assertConversationKeyFail(t,
 		"fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364139",
 		"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
@@ -456,7 +455,6 @@ func TestConversationKeyFail003(t *testing.T) {
 
 func TestConversationKeyFail004(t *testing.T) {
 	// sec1 == curve.n
-	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
 	assertConversationKeyFail(t,
 		"fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
 		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
@@ -466,7 +464,6 @@ func TestConversationKeyFail004(t *testing.T) {
 
 func TestConversationKeyFail005(t *testing.T) {
 	// pub2 is invalid, no sqrt
-	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
 	assertConversationKeyFail(t,
 		"0000000000000000000000000000000000000000000000000000000000000002",
 		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
@@ -476,7 +473,6 @@ func TestConversationKeyFail005(t *testing.T) {
 
 func TestConversationKeyFail006(t *testing.T) {
 	// pub2 is point of order 3 on twist
-	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
 	assertConversationKeyFail(t,
 		"0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
 		"0000000000000000000000000000000000000000000000000000000000000000",
@@ -486,7 +482,6 @@ func TestConversationKeyFail006(t *testing.T) {
 
 func TestConversationKeyFail007(t *testing.T) {
 	// pub2 is point of order 13 on twist
-	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
 	assertConversationKeyFail(t,
 		"0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
 		"eb1f7200aecaa86682376fb1c13cd12b732221e774f553b0a0857f88fa20f86d",
@@ -496,7 +491,6 @@ func TestConversationKeyFail007(t *testing.T) {
 
 func TestConversationKeyFail008(t *testing.T) {
 	// pub2 is point of order 3319 on twist
-	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
 	assertConversationKeyFail(t,
 		"0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
 		"709858a4c121e4a84eb59c0ded0261093c71e8ca29efeef21a6161c447bcaf9f",
