@@ -382,3 +382,286 @@ func TestCryptFail008(t *testing.T) {
 		"invalid padding",
 	)
 }
+
+func TestConversationKey001(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"315e59ff51cb9209768cf7da80791ddcaae56ac9775eb25b6dee1234bc5d2268",
+		"c2f9d9948dc8c7c38321e4b85c8558872eafa0641cd269db76848a6073e69133",
+		"3dfef0ce2a4d80a25e7a328accf73448ef67096f65f79588e358d9a0eb9013f1",
+	)
+}
+
+func TestConversationKey002(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"a1e37752c9fdc1273be53f68c5f74be7c8905728e8de75800b94262f9497c86e",
+		"03bb7947065dde12ba991ea045132581d0954f042c84e06d8c00066e23c1a800",
+		"4d14f36e81b8452128da64fe6f1eae873baae2f444b02c950b90e43553f2178b",
+	)
+}
+
+func TestConversationKey003(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"98a5902fd67518a0c900f0fb62158f278f94a21d6f9d33d30cd3091195500311",
+		"aae65c15f98e5e677b5050de82e3aba47a6fe49b3dab7863cf35d9478ba9f7d1",
+		"9c00b769d5f54d02bf175b7284a1cbd28b6911b06cda6666b2243561ac96bad7",
+	)
+}
+
+func TestConversationKey004(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"86ae5ac8034eb2542ce23ec2f84375655dab7f836836bbd3c54cefe9fdc9c19f",
+		"59f90272378089d73f1339710c02e2be6db584e9cdbe86eed3578f0c67c23585",
+		"19f934aafd3324e8415299b64df42049afaa051c71c98d0aa10e1081f2e3e2ba",
+	)
+}
+
+func TestConversationKey005(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"2528c287fe822421bc0dc4c3615878eb98e8a8c31657616d08b29c00ce209e34",
+		"f66ea16104c01a1c532e03f166c5370a22a5505753005a566366097150c6df60",
+		"c833bbb292956c43366145326d53b955ffb5da4e4998a2d853611841903f5442",
+	)
+}
+
+func TestConversationKey006(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"49808637b2d21129478041813aceb6f2c9d4929cd1303cdaf4fbdbd690905ff2",
+		"74d2aab13e97827ea21baf253ad7e39b974bb2498cc747cdb168582a11847b65",
+		"4bf304d3c8c4608864c0fe03890b90279328cd24a018ffa9eb8f8ccec06b505d",
+	)
+}
+
+func TestConversationKey007(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"af67c382106242c5baabf856efdc0629cc1c5b4061f85b8ceaba52aa7e4b4082",
+		"bdaf0001d63e7ec994fad736eab178ee3c2d7cfc925ae29f37d19224486db57b",
+		"a3a575dd66d45e9379904047ebfb9a7873c471687d0535db00ef2daa24b391db",
+	)
+}
+
+func TestConversationKey008(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"0e44e2d1db3c1717b05ffa0f08d102a09c554a1cbbf678ab158b259a44e682f1",
+		"1ffa76c5cc7a836af6914b840483726207cb750889753d7499fb8b76aa8fe0de",
+		"a39970a667b7f861f100e3827f4adbf6f464e2697686fe1a81aeda817d6b8bdf",
+	)
+}
+
+func TestConversationKey009(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"5fc0070dbd0666dbddc21d788db04050b86ed8b456b080794c2a0c8e33287bb6",
+		"31990752f296dd22e146c9e6f152a269d84b241cc95bb3ff8ec341628a54caf0",
+		"72c21075f4b2349ce01a3e604e02a9ab9f07e35dd07eff746de348b4f3c6365e",
+	)
+}
+
+func TestConversationKey010(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"1b7de0d64d9b12ddbb52ef217a3a7c47c4362ce7ea837d760dad58ab313cba64",
+		"24383541dd8083b93d144b431679d70ef4eec10c98fceef1eff08b1d81d4b065",
+		"dd152a76b44e63d1afd4dfff0785fa07b3e494a9e8401aba31ff925caeb8f5b1",
+	)
+}
+
+func TestConversationKey011(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"df2f560e213ca5fb33b9ecde771c7c0cbd30f1cf43c2c24de54480069d9ab0af",
+		"eeea26e552fc8b5e377acaa03e47daa2d7b0c787fac1e0774c9504d9094c430e",
+		"770519e803b80f411c34aef59c3ca018608842ebf53909c48d35250bd9323af6",
+	)
+}
+
+func TestConversationKey012(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"cffff919fcc07b8003fdc63bc8a00c0f5dc81022c1c927c62c597352190d95b9",
+		"eb5c3cca1a968e26684e5b0eb733aecfc844f95a09ac4e126a9e58a4e4902f92",
+		"46a14ee7e80e439ec75c66f04ad824b53a632b8409a29bbb7c192e43c00bb795",
+	)
+}
+
+func TestConversationKey013(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"64ba5a685e443e881e9094647ddd32db14444bb21aa7986beeba3d1c4673ba0a",
+		"50e6a4339fac1f3bf86f2401dd797af43ad45bbf58e0801a7877a3984c77c3c4",
+		"968b9dbbfcede1664a4ca35a5d3379c064736e87aafbf0b5d114dff710b8a946",
+	)
+}
+
+func TestConversationKey014(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"dd0c31ccce4ec8083f9b75dbf23cc2878e6d1b6baa17713841a2428f69dee91a",
+		"b483e84c1339812bed25be55cff959778dfc6edde97ccd9e3649f442472c091b",
+		"09024503c7bde07eb7865505891c1ea672bf2d9e25e18dd7a7cea6c69bf44b5d",
+	)
+}
+
+func TestConversationKey015(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"af71313b0d95c41e968a172b33ba5ebd19d06cdf8a7a98df80ecf7af4f6f0358",
+		"2a5c25266695b461ee2af927a6c44a3c598b8095b0557e9bd7f787067435bc7c",
+		"fe5155b27c1c4b4e92a933edae23726a04802a7cc354a77ac273c85aa3c97a92",
+	)
+}
+
+func TestConversationKey016(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"6636e8a389f75fe068a03b3edb3ea4a785e2768e3f73f48ffb1fc5e7cb7289dc",
+		"514eb2064224b6a5829ea21b6e8f7d3ea15ff8e70e8555010f649eb6e09aec70",
+		"ff7afacd4d1a6856d37ca5b546890e46e922b508639214991cf8048ddbe9745c",
+	)
+}
+
+func TestConversationKey017(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"94b212f02a3cfb8ad147d52941d3f1dbe1753804458e6645af92c7b2ea791caa",
+		"f0cac333231367a04b652a77ab4f8d658b94e86b5a8a0c472c5c7b0d4c6a40cc",
+		"e292eaf873addfed0a457c6bd16c8effde33d6664265697f69f420ab16f6669b",
+	)
+}
+
+func TestConversationKey018(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"aa61f9734e69ae88e5d4ced5aae881c96f0d7f16cca603d3bed9eec391136da6",
+		"4303e5360a884c360221de8606b72dd316da49a37fe51e17ada4f35f671620a6",
+		"8e7d44fd4767456df1fb61f134092a52fcd6836ebab3b00766e16732683ed848",
+	)
+}
+
+func TestConversationKey019(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"5e914bdac54f3f8e2cba94ee898b33240019297b69e96e70c8a495943a72fc98",
+		"5bd097924f606695c59f18ff8fd53c174adbafaaa71b3c0b4144a3e0a474b198",
+		"f5a0aecf2984bf923c8cd5e7bb8be262d1a8353cb93959434b943a07cf5644bc",
+	)
+}
+
+func TestConversationKey020(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"8b275067add6312ddee064bcdbeb9d17e88aa1df36f430b2cea5cc0413d8278a",
+		"65bbbfca819c90c7579f7a82b750a18c858db1afbec8f35b3c1e0e7b5588e9b8",
+		"2c565e7027eb46038c2263563d7af681697107e975e9914b799d425effd248d6",
+	)
+}
+
+func TestConversationKey021(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"1ac848de312285f85e0f7ec208aac20142a1f453402af9b34ec2ec7a1f9c96fc",
+		"45f7318fe96034d23ee3ddc25b77f275cc1dd329664dd51b89f89c4963868e41",
+		"b56e970e5057a8fd929f8aad9248176b9af87819a708d9ddd56e41d1aec74088",
+	)
+}
+
+func TestConversationKey022(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"295a1cf621de401783d29d0e89036aa1c62d13d9ad307161b4ceb535ba1b40e6",
+		"840115ddc7f1034d3b21d8e2103f6cb5ab0b63cf613f4ea6e61ae3d016715cdd",
+		"b4ee9c0b9b9fef88975773394f0a6f981ca016076143a1bb575b9ff46e804753",
+	)
+}
+
+func TestConversationKey023(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"a28eed0fe977893856ab9667e06ace39f03abbcdb845c329a1981be438ba565d",
+		"b0f38b950a5013eba5ab4237f9ed29204a59f3625c71b7e210fec565edfa288c",
+		"9d3a802b45bc5aeeb3b303e8e18a92ddd353375710a31600d7f5fff8f3a7285b",
+	)
+}
+
+func TestConversationKey024(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"7ab65af72a478c05f5c651bdc4876c74b63d20d04cdbf71741e46978797cd5a4",
+		"f1112159161b568a9cb8c9dd6430b526c4204bcc8ce07464b0845b04c041beda",
+		"943884cddaca5a3fef355e9e7f08a3019b0b66aa63ec90278b0f9fdb64821e79",
+	)
+}
+
+func TestConversationKey025(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"95c79a7b75ba40f2229e85756884c138916f9d103fc8f18acc0877a7cceac9fe",
+		"cad76bcbd31ca7bbda184d20cc42f725ed0bb105b13580c41330e03023f0ffb3",
+		"81c0832a669eea13b4247c40be51ccfd15bb63fcd1bba5b4530ce0e2632f301b",
+	)
+}
+
+func TestConversationKey026(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"baf55cc2febd4d980b4b393972dfc1acf49541e336b56d33d429bce44fa12ec9",
+		"0c31cf87fe565766089b64b39460ebbfdedd4a2bc8379be73ad3c0718c912e18",
+		"37e2344da9ecdf60ae2205d81e89d34b280b0a3f111171af7e4391ded93b8ea6",
+	)
+}
+
+func TestConversationKey027(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"6eeec45acd2ed31693c5256026abf9f072f01c4abb61f51cf64e6956b6dc8907",
+		"e501b34ed11f13d816748c0369b0c728e540df3755bab59ed3327339e16ff828",
+		"afaa141b522ddb27bb880d768903a7f618bb8b6357728cae7fb03af639b946e6",
+	)
+}
+
+func TestConversationKey028(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"261a076a9702af1647fb343c55b3f9a4f1096273002287df0015ba81ce5294df",
+		"b2777c863878893ae100fb740c8fab4bebd2bf7be78c761a75593670380a6112",
+		"76f8d2853de0734e51189ced523c09427c3e46338b9522cd6f74ef5e5b475c74",
+	)
+}
+
+func TestConversationKey029(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"ed3ec71ca406552ea41faec53e19f44b8f90575eda4b7e96380f9cc73c26d6f3",
+		"86425951e61f94b62e20cae24184b42e8e17afcf55bafa58645efd0172624fae",
+		"f7ffc520a3a0e9e9b3c0967325c9bf12707f8e7a03f28b6cd69ae92cf33f7036",
+	)
+}
+
+func TestConversationKey030(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"5a788fc43378d1303ac78639c59a58cb88b08b3859df33193e63a5a3801c722e",
+		"a8cba2f87657d229db69bee07850fd6f7a2ed070171a06d006ec3a8ac562cf70",
+		"7d705a27feeedf78b5c07283362f8e361760d3e9f78adab83e3ae5ce7aeb6409",
+	)
+}
+
+func TestConversationKey031(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"63bffa986e382b0ac8ccc1aa93d18a7aa445116478be6f2453bad1f2d3af2344",
+		"b895c70a83e782c1cf84af558d1038e6b211c6f84ede60408f519a293201031d",
+		"3a3b8f00d4987fc6711d9be64d9c59cf9a709c6c6481c2cde404bcc7a28f174e",
+	)
+}
+
+func TestConversationKey032(t *testing.T) {
+	assertConversationKeyGenerationPub(t,
+		"e4a8bcacbf445fd3721792b939ff58e691cdcba6a8ba67ac3467b45567a03e5c",
+		"b54053189e8c9252c6950059c783edb10675d06d20c7b342f73ec9fa6ed39c9d",
+		"7b3933b4ef8189d347169c7955589fc1cfc01da5239591a08a183ff6694c44ad",
+	)
+}
+
+func TestConversationKey033(t *testing.T) {
+	// sec1 = n-2, pub2: random, 0x02
+	assertConversationKeyGenerationPub(t,
+		"fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364139",
+		"0000000000000000000000000000000000000000000000000000000000000002",
+		"8b6392dbf2ec6a2b2d5b1477fc2be84d63ef254b667cadd31bd3f444c44ae6ba",
+	)
+}
+
+func TestConversationKey034(t *testing.T) {
+	// sec1 = 2, pub2: rand
+	assertConversationKeyGenerationPub(t,
+		"0000000000000000000000000000000000000000000000000000000000000002",
+		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdeb",
+		"be234f46f60a250bef52a5ee34c758800c4ca8e5030bf4cc1a31d37ba2104d43",
+	)
+}
+
+func TestConversationKey035(t *testing.T) {
+	// sec1 == pub2
+	assertConversationKeyGenerationPub(t,
+		"0000000000000000000000000000000000000000000000000000000000000001",
+		"79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+		"3b4610cb7189beb9cc29eb3716ecc6102f1247e8f3101a03a1787d8908aeb54e",
+	)
+}

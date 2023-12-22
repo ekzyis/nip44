@@ -116,7 +116,8 @@ func Decrypt(conversationKey []byte, ciphertext string) (string, error) {
 }
 
 func GenerateConversationKey(sendPrivkey *secp256k1.PrivateKey, recvPubkey *secp256k1.PublicKey) []byte {
-	return secp256k1.GenerateSharedSecret(sendPrivkey, recvPubkey)
+	shared := secp256k1.GenerateSharedSecret(sendPrivkey, recvPubkey)
+	return hkdf.Extract(sha256.New, shared, []byte("nip44-v2"))
 }
 
 func chacha20_(key []byte, nonce []byte, message []byte) ([]byte, error) {
