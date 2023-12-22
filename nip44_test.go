@@ -135,7 +135,6 @@ func assertConversationKeyGenerationSec(t *testing.T, sk1 string, sk2 string, co
 }
 
 func assertConversationKeyGenerationPub(t *testing.T, sk1 string, pub2 string, conversationKey string) bool {
-
 	var (
 		sendPrivkey *secp256k1.PrivateKey
 		recvPubkey  *secp256k1.PublicKey
