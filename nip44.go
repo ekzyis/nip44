@@ -117,6 +117,15 @@ func Decrypt(conversationKey []byte, ciphertext string) (string, error) {
 }
 
 func GenerateConversationKey(sendPrivkey *secp256k1.PrivateKey, recvPubkey *secp256k1.PublicKey) []byte {
+	// TODO: Make sure keys are not invalid or weak since the secp256k1 package does not.
+	// See documentation of secp256k1.PrivKeyFromBytes:
+	// ================================================================================
+	// | WARNING: This means passing a slice with more than 32 bytes is truncated and |
+	// | that truncated value is reduced modulo N.  Further, 0 is not a valid private |
+	// | key.  It is up to the caller to provide a value in the appropriate range of  |
+	// | [1, N-1].  Failure to do so will either result in an invalid private key or  |
+	// | potentially weak private keys that have bias that could be exploited.        |
+	// ================================================================================
 	shared := secp256k1.GenerateSharedSecret(sendPrivkey, recvPubkey)
 	return hkdf.Extract(sha256.New, shared, []byte("nip44-v2"))
 }

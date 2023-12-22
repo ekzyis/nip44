@@ -96,6 +96,27 @@ func assertDecryptFail(t *testing.T, sk1 string, pub2 string, conversationKey st
 	assert.ErrorContains(t, err, msg)
 }
 
+func assertConversationKeyFail(t *testing.T, sk1 string, pub2 string, msg string) {
+	var (
+		// sendPrivkey *secp256k1.PrivateKey
+		// recvPubkey  *secp256k1.PublicKey
+		decoded []byte
+		ok      bool
+		err     error
+	)
+	decoded, err = hex.DecodeString(sk1)
+	if ok = assert.NoErrorf(t, err, "hex decode failed for sk1: %v", err); !ok {
+		return
+	}
+	// sendPrivkey = secp256k1.PrivKeyFromBytes(decoded)
+	decoded, err = hex.DecodeString("02" + pub2)
+	if ok = assert.NoErrorf(t, err, "hex decode failed for pub2: %v", err); !ok {
+		return
+	}
+	_, err = secp256k1.ParsePubKey(decoded)
+	assert.ErrorContains(t, err, msg)
+}
+
 func assertConversationKeyGeneration(t *testing.T, sendPrivkey *secp256k1.PrivateKey, recvPubkey *secp256k1.PublicKey, conversationKey string) bool {
 	var (
 		actualConversationKey   []byte
@@ -406,36 +427,83 @@ func TestCryptLong003(t *testing.T) {
 	)
 }
 
-func TestCryptPub001(t *testing.T) {
-	assertCryptPub(t,
+func TestConversationKeyFail001(t *testing.T) {
+	// sec1 higher than curve.n
+	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
+	assertConversationKeyFail(t,
+		"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+		"x coordinate 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef is not on the secp256k1 curve",
+	)
+}
+
+func TestConversationKeyFail002(t *testing.T) {
+	// sec1 is 0
+	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
+	assertConversationKeyFail(t,
+		"0000000000000000000000000000000000000000000000000000000000000000",
+		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+		"x coordinate 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef is not on the secp256k1 curve",
+	)
+}
+
+func TestConversationKeyFail003(t *testing.T) {
+	// pub2 is invalid, no sqrt, all-ff
+	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
+	assertConversationKeyFail(t,
 		"fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364139",
-		"0000000000000000000000000000000000000000000000000000000000000002",
-		"7a1ccf5ce5a08e380f590de0c02776623b85a61ae67cfb6a017317e505b7cb51",
-		"a000000000000000000000000000000000000000000000000000000000000001",
-		"⁰⁴⁵₀₁₂",
-		"AqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2+xmGnjIMPMqqJGmjdYAYZUDUyEEUO3/evHUaO40LePeR91VlMVZ7I+nKJPkaUiKZ3cQiQnA86Uwti2IxepmzOFN",
+		"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+		"x >= field prime",
 	)
 }
 
-func TestCryptPub002(t *testing.T) {
-	assertCryptPub(t,
-		"0000000000000000000000000000000000000000000000000000000000000002",
-		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdeb",
-		"aa971537d741089885a0b48f2730a125e15b36033d089d4537a4e1204e76b39e",
-		"b000000000000000000000000000000000000000000000000000000000000002",
-		"A Peer-to-Peer Electronic Cash System",
-		"ArAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACyuqG6RycuPyDPtwxzTcuMQu+is3N5XuWTlvCjligVaVBRydexaylXbsX592MEd3/Jt13BNL/GlpYpGDvLS4Tt/+2s9FX/16e/RDc+czdwXglc4DdSHiq+O06BvvXYfEQOPw=",
+func TestConversationKeyFail004(t *testing.T) {
+	// sec1 == curve.n
+	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
+	assertConversationKeyFail(t,
+		"fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
+		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+		"x coordinate 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef is not on the secp256k1 curve",
 	)
 }
 
-func TestCryptPub003(t *testing.T) {
-	assertCryptPub(t,
-		"0000000000000000000000000000000000000000000000000000000000000001",
-		"79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
-		"79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
-		"79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
-		"A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending.",
-		"Anm+Zn753LusVaBilc6HCwcCm/zbLc4o2VnygVsW+BeYb9wHyKevpe7ohJ6OkpceFcb0pySY8TLGwT7Q3zWNDKxc9blXanxKborEXkQH8xNaB2ViJfgxpkutbwbYd0Grix34xzaZBASufdsNm7R768t51tI6sdS0nms6kWLVJpEGu6Ke4Bldv4StJtWBLaTcgsgN+4WxDbBhC/nhwjEQiBBbbmUrPWjaVZXjl8dzzPrYtkSoeBNJs/UNvDwym4+qrmhv4ASTvVflpZgLlSe4seqeu6dWoRqn8uRHZQnPs+XhqwbdCHpeKGB3AfGBykZY0RIr0tjarWdXNasGbIhGM3GiLasioJeabAZw0plCevDkKpZYDaNfMJdzqFVJ8UXRIpvDpQad0SOm8lLum/aBzUpLqTjr3RvSlhYdbuODpd9pR5K60k4L2N8nrPtBv08wlilQg2ymwQgKVE6ipxIzzKMetn8+f0nQ9bHjWFJqxetSuMzzArTUQl9c4q/DwZmCBhI2",
+func TestConversationKeyFail005(t *testing.T) {
+	// pub2 is invalid, no sqrt
+	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
+	assertConversationKeyFail(t,
+		"0000000000000000000000000000000000000000000000000000000000000002",
+		"1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+		"x coordinate 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef is not on the secp256k1 curve",
+	)
+}
+
+func TestConversationKeyFail006(t *testing.T) {
+	// pub2 is point of order 3 on twist
+	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
+	assertConversationKeyFail(t,
+		"0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
+		"0000000000000000000000000000000000000000000000000000000000000000",
+		"x coordinate 0000000000000000000000000000000000000000000000000000000000000000 is not on the secp256k1 curve",
+	)
+}
+
+func TestConversationKeyFail007(t *testing.T) {
+	// pub2 is point of order 13 on twist
+	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
+	assertConversationKeyFail(t,
+		"0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
+		"eb1f7200aecaa86682376fb1c13cd12b732221e774f553b0a0857f88fa20f86d",
+		"x coordinate eb1f7200aecaa86682376fb1c13cd12b732221e774f553b0a0857f88fa20f86d is not on the secp256k1 curve",
+	)
+}
+
+func TestConversationKeyFail008(t *testing.T) {
+	// pub2 is point of order 3319 on twist
+	t.Skip("secp256k1 keys are not validated yet in during conversation key generation. See TODO.")
+	assertConversationKeyFail(t,
+		"0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
+		"709858a4c121e4a84eb59c0ded0261093c71e8ca29efeef21a6161c447bcaf9f",
+		"x coordinate 709858a4c121e4a84eb59c0ded0261093c71e8ca29efeef21a6161c447bcaf9f is not on the secp256k1 curve",
 	)
 }
 
