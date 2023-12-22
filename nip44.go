@@ -155,7 +155,7 @@ func messageKeys(conversationKey []byte, salt []byte) ([]byte, []byte, []byte, e
 		auth  []byte = make([]byte, 32)
 		err   error
 	)
-	r = hkdf.New(sha256.New, conversationKey, salt, []byte("nip44-v2"))
+	r = hkdf.Expand(sha256.New, conversationKey, salt)
 	if _, err = io.ReadFull(r, enc); err != nil {
 		return nil, nil, nil, err
 	}
