@@ -17,7 +17,8 @@ import (
 )
 
 var (
-	MaxPlaintextSize = 65536 - 128 // 64kb - 128
+	MinPlaintextSize = 0x0001 // 1b msg => padded to 32b
+	MaxPlaintextSize = 0xffff // 65535 (64kb-1) => padded to 64kb
 )
 
 type EncryptOptions struct {
@@ -178,7 +179,7 @@ func pad(s string) ([]byte, error) {
 	)
 	sb = []byte(s)
 	sbLen = len(sb)
-	if sbLen < 1 || sbLen >= MaxPlaintextSize {
+	if sbLen < 1 || sbLen > MaxPlaintextSize {
 		return nil, errors.New("plaintext should be between 1b and 64kB")
 	}
 	padding = calcPadding(sbLen)

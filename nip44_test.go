@@ -1,7 +1,9 @@
 package nip44_test
 
 import (
+	"crypto/sha256"
 	"encoding/hex"
+	"hash"
 	"testing"
 
 	"git.ekzyis.com/ekzyis/nip44"
@@ -208,6 +210,48 @@ func assertMessageKeyGeneration(t *testing.T, conversationKey string, salt strin
 	return true
 }
 
+func assertCryptLong(t *testing.T, conversationKey string, salt string, pattern string, repeat int, plaintextSha256 string, payloadSha256 string) {
+	var (
+		convKey               []byte
+		convSalt              []byte
+		plaintext             string
+		actualPlaintextSha256 string
+		actualPayload         string
+		actualPayloadSha256   string
+		h                     hash.Hash
+		ok                    bool
+		err                   error
+	)
+	convKey, err = hex.DecodeString(conversationKey)
+	if ok = assert.NoErrorf(t, err, "hex decode failed for convKey: %v", err); !ok {
+		return
+	}
+	convSalt, err = hex.DecodeString(salt)
+	if ok = assert.NoErrorf(t, err, "hex decode failed for salt: %v", err); !ok {
+		return
+	}
+	plaintext = ""
+	for i := 0; i < repeat; i++ {
+		plaintext += pattern
+	}
+	h = sha256.New()
+	h.Write([]byte(plaintext))
+	actualPlaintextSha256 = hex.EncodeToString(h.Sum(nil))
+	if ok = assert.Equalf(t, plaintextSha256, actualPlaintextSha256, "invalid plaintext sha256 hash: %v", err); !ok {
+		return
+	}
+	actualPayload, err = nip44.Encrypt(convKey, plaintext, &nip44.EncryptOptions{Salt: convSalt})
+	if ok = assert.NoErrorf(t, err, "encryption failed: %v", err); !ok {
+		return
+	}
+	h.Reset()
+	h.Write([]byte(actualPayload))
+	actualPayloadSha256 = hex.EncodeToString(h.Sum(nil))
+	if ok = assert.Equalf(t, payloadSha256, actualPayloadSha256, "invalid payload sha256 hash: %v", err); !ok {
+		return
+	}
+}
+
 func TestCryptPriv001(t *testing.T) {
 	assertCryptPriv(t,
 		"0000000000000000000000000000000000000000000000000000000000000001",
@@ -326,6 +370,39 @@ func TestCryptPriv011(t *testing.T) {
 		"a3e219242d85465e70adcd640b564b3feff57d2ef8745d5e7a0663b2dccceb54",
 		"🙈 🙉 🙊 0️⃣ 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣ 🔟 Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗",
 		"AqPiGSQthUZecK3NZAtWSz/v9X0u+HRdXnoGY7LczOtUf05aMF89q1FLwJvaFJYICZoMYgRJHFLwPiOHce7fuAc40kX0wXJvipyBJ9HzCOj7CgtnC1/cmPCHR3s5AIORmroBWglm1LiFMohv1FSPEbaBD51VXxJa4JyWpYhreSOEjn1wd0lMKC9b+osV2N2tpbs+rbpQem2tRen3sWflmCqjkG5VOVwRErCuXuPb5+hYwd8BoZbfCrsiAVLd7YT44dRtKNBx6rkabWfddKSLtreHLDysOhQUVOp/XkE7OzSkWl6sky0Hva6qJJ/V726hMlomvcLHjE41iKmW2CpcZfOedg==",
+	)
+}
+
+func TestCryptLong001(t *testing.T) {
+	assertCryptLong(t,
+		"8fc262099ce0d0bb9b89bac05bb9e04f9bc0090acc181fef6840ccee470371ed",
+		"326bcb2c943cd6bb717588c9e5a7e738edf6ed14ec5f5344caa6ef56f0b9cff7",
+		"x",
+		65535,
+		"09ab7495d3e61a76f0deb12cb0306f0696cbb17ffc12131368c7a939f12f56d3",
+		"90714492225faba06310bff2f249ebdc2a5e609d65a629f1c87f2d4ffc55330a",
+	)
+}
+
+func TestCryptLong002(t *testing.T) {
+	assertCryptLong(t,
+		"56adbe3720339363ab9c3b8526ffce9fd77600927488bfc4b59f7a68ffe5eae0",
+		"ad68da81833c2a8ff609c3d2c0335fd44fe5954f85bb580c6a8d467aa9fc5dd0",
+		"!",
+		65535,
+		"6af297793b72ae092c422e552c3bb3cbc310da274bd1cf9e31023a7fe4a2d75e",
+		"8013e45a109fad3362133132b460a2d5bce235fe71c8b8f4014793fb52a49844",
+	)
+}
+
+func TestCryptLong003(t *testing.T) {
+	assertCryptLong(t,
+		"7fc540779979e472bb8d12480b443d1e5eb1098eae546ef2390bee499bbf46be",
+		"34905e82105c20de9a2f6cd385a0d541e6bcc10601d12481ff3a7575dc622033",
+		"🦄",
+		16383,
+		"a249558d161b77297bc0cb311dde7d77190f6571b25c7e4429cd19044634a61f",
+		"b3348422471da1f3c59d79acfe2fe103f3cd24488109e5b18734cdb5953afd15",
 	)
 }
 
