@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func assertCryptSec(t *testing.T, sk1 string, sk2 string, conversationKey string, salt string, plaintext string, expected string) {
+func assertCryptPriv(t *testing.T, sk1 string, sk2 string, conversationKey string, salt string, plaintext string, expected string) {
 	var (
 		k1        []byte
 		s         []byte
@@ -160,8 +160,8 @@ func assertConversationKeyGenerationPub(t *testing.T, sk1 string, pub2 string, c
 	return assertConversationKeyGeneration(t, sendPrivkey, recvPubkey, conversationKey)
 }
 
-func TestCryptSec001(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv001(t *testing.T) {
+	assertCryptPriv(t,
 		"0000000000000000000000000000000000000000000000000000000000000001",
 		"0000000000000000000000000000000000000000000000000000000000000002",
 		"c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5",
@@ -171,8 +171,8 @@ func TestCryptSec001(t *testing.T) {
 	)
 }
 
-func TestCryptSec002(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv002(t *testing.T) {
+	assertCryptPriv(t,
 		"0000000000000000000000000000000000000000000000000000000000000002",
 		"0000000000000000000000000000000000000000000000000000000000000001",
 		"c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5",
@@ -182,8 +182,8 @@ func TestCryptSec002(t *testing.T) {
 	)
 }
 
-func TestCryptSec003(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv003(t *testing.T) {
+	assertCryptPriv(t,
 		"5c0c523f52a5b6fad39ed2403092df8cebc36318b39383bca6c00808626fab3a",
 		"4b22aa260e4acb7021e32f38a6cdf4b673c6a277755bfce287e370c924dc936d",
 		"94da47d851b9c1ed33b3b72f35434f56aa608d60e573e9c295f568011f4f50a4",
@@ -193,8 +193,8 @@ func TestCryptSec003(t *testing.T) {
 	)
 }
 
-func TestCryptSec004(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv004(t *testing.T) {
+	assertCryptPriv(t,
 		"8f40e50a84a7462e2b8d24c28898ef1f23359fff50d8c509e6fb7ce06e142f9c",
 		"b9b0a1e9cc20100c5faa3bbe2777303d25950616c4c6a3fa2e3e046f936ec2ba",
 		"ab99c122d4586cdd5c813058aa543d0e7233545dbf6874fc34a3d8d9a18fbbc3",
@@ -204,8 +204,8 @@ func TestCryptSec004(t *testing.T) {
 	)
 }
 
-func TestCryptSec005(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv005(t *testing.T) {
+	assertCryptPriv(t,
 		"875adb475056aec0b4809bd2db9aa00cff53a649e7b59d8edcbf4e6330b0995c",
 		"9c05781112d5b0a2a7148a222e50e0bd891d6b60c5483f03456e982185944aae",
 		"a449f2a85c6d3db0f44c64554a05d11a3c0988d645e4b4b2592072f63662f422",
@@ -215,8 +215,8 @@ func TestCryptSec005(t *testing.T) {
 	)
 }
 
-func TestCryptSec006(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv006(t *testing.T) {
+	assertCryptPriv(t,
 		"eba1687cab6a3101bfc68fd70f214aa4cc059e9ec1b79fdb9ad0a0a4e259829f",
 		"dff20d262bef9dfd94666548f556393085e6ea421c8af86e9d333fa8747e94b3",
 		"decde9938ffcb14fa7ff300105eb1bf239469af9baf376e69755b9070ae48c47",
@@ -226,8 +226,8 @@ func TestCryptSec006(t *testing.T) {
 	)
 }
 
-func TestCryptSec007(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv007(t *testing.T) {
+	assertCryptPriv(t,
 		"d5633530f5bcfebceb5584cfbbf718a30df0751b729dd9a789b9f30c0587d74e",
 		"b74e6a341fb134127272b795a08b59250e5fa45a82a2eb4095e4ce9ed5f5e214",
 		"c6f2fde7aa00208c388f506455c31c3fa07caf8b516d43bf7514ee19edcda994",
@@ -237,8 +237,8 @@ func TestCryptSec007(t *testing.T) {
 	)
 }
 
-func TestCryptSec008(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv008(t *testing.T) {
+	assertCryptPriv(t,
 		"d5633530f5bcfebceb5584cfbbf718a30df0751b729dd9a789b9f30c0587d74e",
 		"b74e6a341fb134127272b795a08b59250e5fa45a82a2eb4095e4ce9ed5f5e214",
 		"c6f2fde7aa00208c388f506455c31c3fa07caf8b516d43bf7514ee19edcda994",
@@ -248,8 +248,8 @@ func TestCryptSec008(t *testing.T) {
 	)
 }
 
-func TestCryptSec009(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv009(t *testing.T) {
+	assertCryptPriv(t,
 		"d5633530f5bcfebceb5584cfbbf718a30df0751b729dd9a789b9f30c0587d74e",
 		"b74e6a341fb134127272b795a08b59250e5fa45a82a2eb4095e4ce9ed5f5e214",
 		"c6f2fde7aa00208c388f506455c31c3fa07caf8b516d43bf7514ee19edcda994",
@@ -259,8 +259,8 @@ func TestCryptSec009(t *testing.T) {
 	)
 }
 
-func TestCryptSec010(t *testing.T) {
-	assertCryptSec(t,
+func TestCryptPriv010(t *testing.T) {
+	assertCryptPriv(t,
 		"d5633530f5bcfebceb5584cfbbf718a30df0751b729dd9a789b9f30c0587d74e",
 		"b74e6a341fb134127272b795a08b59250e5fa45a82a2eb4095e4ce9ed5f5e214",
 		"c6f2fde7aa00208c388f506455c31c3fa07caf8b516d43bf7514ee19edcda994",
