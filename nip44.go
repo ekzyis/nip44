@@ -118,12 +118,11 @@ func Decrypt(conversationKey []byte, ciphertext string) (string, error) {
 		return "", err
 	}
 	unpaddedLen = binary.BigEndian.Uint16(padded[0:2])
-	if unpaddedLen < uint16(MinPlaintextSize) || unpaddedLen > uint16(MaxPlaintextSize) ||
-		len(unpadded) == 0 || len(unpadded) != int(unpaddedLen) || len(padded) != 2+calcPadding(int(unpaddedLen)) {
+	if unpaddedLen < uint16(MinPlaintextSize) || unpaddedLen > uint16(MaxPlaintextSize) || len(padded) != 2+calcPadding(int(unpaddedLen)) {
 		return "", errors.New("invalid padding")
 	}
 	unpadded = padded[2 : unpaddedLen+2]
-	if len(unpadded) == 0 || len(unpadded) != int(unpaddedLen) || len(padded) != 2+calcPadding(int(unpaddedLen)) {
+	if len(unpadded) == 0 || len(unpadded) != int(unpaddedLen) {
 		return "", errors.New("invalid padding")
 	}
 	return string(unpadded), nil
