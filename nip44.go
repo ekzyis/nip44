@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"io"
 	"math"
 
@@ -50,7 +51,7 @@ func Encrypt(conversationKey []byte, plaintext string, options *EncryptOptions) 
 		}
 	}
 	if version != 2 {
-		return "", errors.New("unknown version")
+		return "", errors.New(fmt.Sprintf("unknown version %d", version))
 	}
 	if len(salt) != 32 {
 		return "", errors.New("salt must be 32 bytes")
@@ -76,6 +77,7 @@ func Decrypt(conversationKey []byte, ciphertext string) (string, error) {
 	var (
 		version     int = 2
 		decoded     []byte
+		cLen        int
 		dLen        int
 		salt        []byte
 		ciphertext_ []byte
@@ -88,6 +90,10 @@ func Decrypt(conversationKey []byte, ciphertext string) (string, error) {
 		unpadded    []byte
 		err         error
 	)
+	cLen = len(ciphertext)
+	if cLen < 132 || cLen > 87472 {
+		return "", errors.New(fmt.Sprintf("invalid payload length: %d", cLen))
+	}
 	if ciphertext[0:1] == "#" {
 		return "", errors.New("unknown version")
 	}
@@ -95,9 +101,12 @@ func Decrypt(conversationKey []byte, ciphertext string) (string, error) {
 		return "", errors.New("invalid base64")
 	}
 	if version = int(decoded[0]); version != 2 {
-		return "", errors.New("unknown version")
+		return "", errors.New(fmt.Sprintf("unknown version %d", version))
 	}
 	dLen = len(decoded)
+	if dLen < 99 || dLen > 65603 {
+		return "", errors.New(fmt.Sprintf("invalid data length: %d", dLen))
+	}
 	salt, ciphertext_, hmac_ = decoded[1:33], decoded[33:dLen-32], decoded[dLen-32:]
 	if enc, nonce, auth, err = messageKeys(conversationKey, salt); err != nil {
 		return "", err
@@ -109,6 +118,10 @@ func Decrypt(conversationKey []byte, ciphertext string) (string, error) {
 		return "", err
 	}
 	unpaddedLen = binary.BigEndian.Uint16(padded[0:2])
+	if unpaddedLen < uint16(MinPlaintextSize) || unpaddedLen > uint16(MaxPlaintextSize) ||
+		len(unpadded) == 0 || len(unpadded) != int(unpaddedLen) || len(padded) != 2+calcPadding(int(unpaddedLen)) {
+		return "", errors.New("invalid padding")
+	}
 	unpadded = padded[2 : unpaddedLen+2]
 	if len(unpadded) == 0 || len(unpadded) != int(unpaddedLen) || len(padded) != 2+calcPadding(int(unpaddedLen)) {
 		return "", errors.New("invalid padding")
