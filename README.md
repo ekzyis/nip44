@@ -2,7 +2,7 @@
 
 ---
 
-NIP-44 specification: https://github.com/nostr-protocol/nips/pull/746
+NIP-44 specification: https://github.com/nostr-protocol/nips/blob/master/44.md
 
 To use as library: `go get -u git.ekzyis.com/ekzyis/nip44`
 
